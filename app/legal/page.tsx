@@ -7,8 +7,8 @@ export default function LegalPage() {
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -31,11 +31,17 @@ export default function LegalPage() {
             <div className="flex">
               <div className="ml-3">
                 <p className="text-sm text-amber-800">
-                  <strong>Important Notice:</strong> This platform is not operated by financial advisors, investment advisors, banks, or brokers.
-                  All information, insights, simulations, and outputs provided by this platform are generated using automated calculation logic and artificial intelligence (AI) based solely on the data entered by the user.
-                  Artificial intelligence can make mistakes, produce incomplete results, or generate inaccurate interpretations.
-                  Outputs should therefore be treated as informational and illustrative only, not as professional advice.
-                  By using this platform, you acknowledge and accept these limitations.
+                  <strong>Important Notice:</strong> This platform is not
+                  operated by financial advisors, investment advisors, banks, or
+                  brokers. All information, insights, simulations, and outputs
+                  provided by this platform are generated using automated
+                  calculation logic and artificial intelligence (AI) based
+                  solely on the data entered by the user. Artificial
+                  intelligence can make mistakes, produce incomplete results, or
+                  generate inaccurate interpretations. Outputs should therefore
+                  be treated as informational and illustrative only, not as
+                  professional advice. By using this platform, you acknowledge
+                  and accept these limitations.
                 </p>
               </div>
             </div>
@@ -54,7 +60,13 @@ export default function LegalPage() {
               <div>
                 <h3 className="font-semibold text-gray-800">Contact:</h3>
                 <p className="text-gray-600">
-                  Email: <a href="mailto:geldhero@xyz.com" className="text-blue-600 hover:text-blue-800">geldhero@xyz.com</a>
+                  Email:{" "}
+                  <a
+                    href="mailto:geldhero@xyz.com"
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    geldhero@xyz.com
+                  </a>
                 </p>
               </div>
             </div>
@@ -66,18 +78,37 @@ export default function LegalPage() {
               2. No Financial, Investment, Tax, or Legal Advice
             </h2>
             <p className="text-gray-600 mb-4">
-              The platform provides financial planning simulations and educational information only.
+              The platform provides financial planning simulations and
+              educational information only.
             </p>
             <div className="space-y-4">
               <div>
                 <h3 className="font-semibold text-gray-800">Specifically:</h3>
                 <ul className="list-disc list-inside space-y-2 text-gray-600 ml-4">
-                  <li>We are not financial advisors within the meaning of German or EU financial regulation.</li>
-                  <li>We do not provide investment advice, tax advice, legal advice, or individualized financial recommendations.</li>
-                  <li>We do not assess suitability or appropriateness of financial products.</li>
-                  <li>We do not recommend buying, selling, holding, or avoiding any specific financial instrument or product.</li>
-                  <li>All outputs are generic in nature, even if they appear personalized.</li>
-                  <li>Users should consult licensed professionals before making any financial decisions.</li>
+                  <li>
+                    We are not financial advisors within the meaning of German
+                    or EU financial regulation.
+                  </li>
+                  <li>
+                    We do not provide investment advice, tax advice, legal
+                    advice, or individualized financial recommendations.
+                  </li>
+                  <li>
+                    We do not assess suitability or appropriateness of financial
+                    products.
+                  </li>
+                  <li>
+                    We do not recommend buying, selling, holding, or avoiding
+                    any specific financial instrument or product.
+                  </li>
+                  <li>
+                    All outputs are generic in nature, even if they appear
+                    personalized.
+                  </li>
+                  <li>
+                    Users should consult licensed professionals before making
+                    any financial decisions.
+                  </li>
                 </ul>
               </div>
             </div>
@@ -90,21 +121,39 @@ export default function LegalPage() {
             </h2>
             <div className="space-y-4">
               <div>
-                <h3 className="font-semibold text-gray-800">This platform uses artificial intelligence to:</h3>
+                <h3 className="font-semibold text-gray-800">
+                  This platform uses artificial intelligence to:
+                </h3>
                 <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
                   <li>Summarize financial inputs</li>
                   <li>Generate explanations</li>
                   <li>Simulate scenarios</li>
-                  <li>Translate numerical results into plain-language insights</li>
+                  <li>
+                    Translate numerical results into plain-language insights
+                  </li>
                 </ul>
               </div>
               <div className="bg-red-50 p-4 rounded-lg">
-                <h3 className="font-semibold text-red-800 mb-2">Important limitations:</h3>
+                <h3 className="font-semibold text-red-800 mb-2">
+                  Important limitations:
+                </h3>
                 <ul className="list-disc list-inside space-y-1 text-red-700 ml-4">
-                  <li>AI outputs are based on statistical models and predefined rules</li>
-                  <li>AI does not understand your full personal, legal, or financial context</li>
-                  <li>AI may produce errors, oversimplifications, or misleading conclusions</li>
-                  <li>We make no guarantees regarding the correctness, completeness, or suitability of AI-generated content.</li>
+                  <li>
+                    AI outputs are based on statistical models and predefined
+                    rules
+                  </li>
+                  <li>
+                    AI does not understand your full personal, legal, or
+                    financial context
+                  </li>
+                  <li>
+                    AI may produce errors, oversimplifications, or misleading
+                    conclusions
+                  </li>
+                  <li>
+                    We make no guarantees regarding the correctness,
+                    completeness, or suitability of AI-generated content.
+                  </li>
                 </ul>
               </div>
             </div>
@@ -117,16 +166,22 @@ export default function LegalPage() {
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-green-50 p-4 rounded-lg">
-                <h3 className="font-semibold text-green-800 mb-2">This platform provides:</h3>
+                <h3 className="font-semibold text-green-800 mb-2">
+                  This platform provides:
+                </h3>
                 <ul className="list-disc list-inside space-y-1 text-green-700">
-                  <li>Financial snapshots (income, expenses, surplus/deficit)</li>
+                  <li>
+                    Financial snapshots (income, expenses, surplus/deficit)
+                  </li>
                   <li>Goal feasibility assessments</li>
                   <li>Scenario-based planning simulations</li>
                   <li>Educational explanations of financial concepts</li>
                 </ul>
               </div>
               <div className="bg-red-50 p-4 rounded-lg">
-                <h3 className="font-semibold text-red-800 mb-2">This platform explicitly does not:</h3>
+                <h3 className="font-semibold text-red-800 mb-2">
+                  This platform explicitly does not:
+                </h3>
                 <ul className="list-disc list-inside space-y-1 text-red-700">
                   <li>Execute financial transactions</li>
                   <li>Hold or manage user funds</li>
@@ -145,19 +200,28 @@ export default function LegalPage() {
             </h2>
             <div className="space-y-4">
               <div>
-                <h3 className="font-semibold text-gray-800">Users are solely responsible for:</h3>
+                <h3 className="font-semibold text-gray-800">
+                  Users are solely responsible for:
+                </h3>
                 <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
-                  <li>The accuracy and completeness of the data they provide</li>
+                  <li>
+                    The accuracy and completeness of the data they provide
+                  </li>
                   <li>Interpreting the results appropriately</li>
                   <li>Any decisions made based on the platform's outputs</li>
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800">We are not responsible for consequences arising from:</h3>
+                <h3 className="font-semibold text-gray-800">
+                  We are not responsible for consequences arising from:
+                </h3>
                 <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
                   <li>Incorrect user input</li>
                   <li>Misinterpretation of results</li>
-                  <li>Reliance on AI-generated insights without professional verification</li>
+                  <li>
+                    Reliance on AI-generated insights without professional
+                    verification
+                  </li>
                 </ul>
               </div>
             </div>
@@ -170,7 +234,8 @@ export default function LegalPage() {
             </h2>
             <div className="bg-gray-50 p-4 rounded-lg">
               <p className="text-gray-700 mb-3">
-                To the maximum extent permitted by law, we disclaim all liability for:
+                To the maximum extent permitted by law, we disclaim all
+                liability for:
               </p>
               <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
                 <li>Financial losses or missed opportunities</li>
@@ -190,18 +255,24 @@ export default function LegalPage() {
               7. Data Protection & Privacy (GDPR Compliance)
             </h2>
             <p className="text-gray-600 mb-4">
-              We process personal data in accordance with the EU General Data Protection Regulation (GDPR).
+              We process personal data in accordance with the EU General Data
+              Protection Regulation (GDPR).
             </p>
             <div className="space-y-4">
               <div>
                 <h3 className="font-semibold text-gray-800">Data collected:</h3>
                 <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
-                  <li>Personal and demographic information voluntarily provided by users</li>
+                  <li>
+                    Personal and demographic information voluntarily provided by
+                    users
+                  </li>
                   <li>Financial data necessary for planning simulations</li>
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800">Purpose of processing:</h3>
+                <h3 className="font-semibold text-gray-800">
+                  Purpose of processing:
+                </h3>
                 <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
                   <li>Generating personalized planning outputs</li>
                   <li>Improving platform functionality</li>
@@ -213,11 +284,15 @@ export default function LegalPage() {
                 <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
                   <li>Sell personal data</li>
                   <li>Share data with third parties for marketing</li>
-                  <li>Collect bank account credentials or payment data in the MVP</li>
+                  <li>
+                    Collect bank account credentials or payment data in the MVP
+                  </li>
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800">Users have the right to:</h3>
+                <h3 className="font-semibold text-gray-800">
+                  Users have the right to:
+                </h3>
                 <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
                   <li>Access their data</li>
                   <li>Correct inaccurate data</li>
@@ -241,7 +316,8 @@ export default function LegalPage() {
               <li>Access is restricted to authorized systems only</li>
             </ul>
             <p className="text-gray-600 mt-3 italic">
-              Despite these measures, no system can be guaranteed to be completely secure.
+              Despite these measures, no system can be guaranteed to be
+              completely secure.
             </p>
           </section>
 
@@ -251,14 +327,17 @@ export default function LegalPage() {
               9. External Links & Third-Party Content
             </h2>
             <p className="text-gray-600 mb-3">
-              This platform may contain links to external websites for educational purposes.
+              This platform may contain links to external websites for
+              educational purposes.
             </p>
             <div>
               <h3 className="font-semibold text-gray-800">We:</h3>
               <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
                 <li>Do not control external content</li>
                 <li>Do not endorse third-party opinions or products</li>
-                <li>Are not responsible for external site availability or accuracy</li>
+                <li>
+                  Are not responsible for external site availability or accuracy
+                </li>
               </ul>
             </div>
           </section>
@@ -270,7 +349,9 @@ export default function LegalPage() {
             </h2>
             <div className="space-y-3">
               <div>
-                <p className="text-gray-600">All content on this platform, including:</p>
+                <p className="text-gray-600">
+                  All content on this platform, including:
+                </p>
                 <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
                   <li>Text</li>
                   <li>Calculations</li>
@@ -280,7 +361,8 @@ export default function LegalPage() {
                 </ul>
               </div>
               <p className="text-gray-600">
-                is protected by intellectual property laws. Unauthorized reproduction, distribution, or use is prohibited.
+                is protected by intellectual property laws. Unauthorized
+                reproduction, distribution, or use is prohibited.
               </p>
             </div>
           </section>
@@ -292,7 +374,8 @@ export default function LegalPage() {
             </h2>
             <div className="space-y-3">
               <p className="text-gray-600">
-                We reserve the right to update or modify this legal information at any time to reflect:
+                We reserve the right to update or modify this legal information
+                at any time to reflect:
               </p>
               <ul className="list-disc list-inside space-y-1 text-gray-600 ml-4">
                 <li>Legal or regulatory changes</li>
@@ -300,7 +383,8 @@ export default function LegalPage() {
                 <li>Technical developments</li>
               </ul>
               <p className="text-gray-600">
-                Continued use of the platform constitutes acceptance of the updated terms.
+                Continued use of the platform constitutes acceptance of the
+                updated terms.
               </p>
             </div>
           </section>
@@ -311,7 +395,8 @@ export default function LegalPage() {
               12. Governing Law & Jurisdiction
             </h2>
             <p className="text-gray-600">
-              This platform is governed by the laws of the Federal Republic of Germany.
+              This platform is governed by the laws of the Federal Republic of
+              Germany.
             </p>
           </section>
 
@@ -321,9 +406,10 @@ export default function LegalPage() {
               Questions about this legal information?
             </h2>
             <p className="text-blue-800">
-              If you have any questions about this legal information, please contact us at{" "}
-              <a 
-                href="mailto:geldhero@xyz.com" 
+              If you have any questions about this legal information, please
+              contact us at{" "}
+              <a
+                href="mailto:geldhero@xyz.com"
                 className="text-blue-600 hover:text-blue-800 underline"
               >
                 geldhero@xyz.com
