@@ -1,50 +1,50 @@
-import * as React from "react"
-import { X } from "lucide-react"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
-  isOpen: boolean
-  onClose: () => void
-  children: React.ReactNode
-  title?: string
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  title?: string;
 }
 
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
   ({ className, isOpen, onClose, children, title, ...props }, ref) => {
     React.useEffect(() => {
       if (isOpen) {
-        document.body.style.overflow = "hidden"
+        document.body.style.overflow = "hidden";
       } else {
-        document.body.style.overflow = "unset"
+        document.body.style.overflow = "unset";
       }
-      
+
       return () => {
-        document.body.style.overflow = "unset"
-      }
-    }, [isOpen])
+        document.body.style.overflow = "unset";
+      };
+    }, [isOpen]);
 
     React.useEffect(() => {
       const handleEscape = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
-          onClose()
+          onClose();
         }
-      }
+      };
 
       if (isOpen) {
-        document.addEventListener("keydown", handleEscape)
+        document.addEventListener("keydown", handleEscape);
       }
 
       return () => {
-        document.removeEventListener("keydown", handleEscape)
-      }
-    }, [isOpen, onClose])
+        document.removeEventListener("keydown", handleEscape);
+      };
+    }, [isOpen, onClose]);
 
-    if (!isOpen) return null
+    if (!isOpen) return null;
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm" 
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
           onClick={onClose}
         />
         <div
@@ -71,9 +71,9 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
           </div>
         </div>
       </div>
-    )
+    );
   }
-)
-Modal.displayName = "Modal"
+);
+Modal.displayName = "Modal";
 
-export { Modal }
+export { Modal };
