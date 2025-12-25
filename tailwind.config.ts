@@ -14,7 +14,7 @@ const config: Config = {
         foreground: 'var(--foreground)',
       },
       fontFamily: {
-        outfit: ['Outfit', 'sans-serif'],
+        sans: ['var(--font-figtree)', 'system-ui', 'sans-serif'],
       },
     },
   },
