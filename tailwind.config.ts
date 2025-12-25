@@ -9,12 +9,32 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: '#272757', // midnight blue
+        primary: {
+          DEFAULT: '#2563eb',
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+        },
         background: 'var(--background)',
         foreground: 'var(--foreground)',
+        border: '#e5e7eb',
+        input: '#e5e7eb',
+        ring: '#2563eb',
       },
       fontFamily: {
-        sans: ['var(--font-figtree)', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      borderRadius: {
+        lg: '0.5rem',
+        md: '0.375rem',
+        sm: '0.25rem',
       },
     },
   },

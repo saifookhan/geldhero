@@ -5,16 +5,37 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --ring: #2563eb;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: "Figtree", system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
 @layer base {
   body {
     @apply bg-white text-gray-900;
+  }
+
+  * {
+    @apply border-border;
+  }
+}
+
+@layer components {
+  .stepper-step {
+    @apply relative flex flex-col items-center;
+  }
+
+  .stepper-line {
+    @apply absolute top-5 left-1/2 w-full h-px bg-gray-300 -translate-x-1/2;
+  }
+
+  .stepper-line.active {
+    @apply bg-blue-600;
   }
 }
