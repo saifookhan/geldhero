@@ -23,34 +23,19 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="#features"
+                  href="/calculator"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Features
+                  Calculator
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="#faq"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  FAQ
-                </Link>
-              </li>
+
               <li>
                 <Link
                   href="/login"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/signup"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Sign Up
+                  Login / Signup
                 </Link>
               </li>
             </ul>
@@ -66,38 +51,6 @@ export default function Footer() {
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Legal Information
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/imprint"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Imprint
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/cookies"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Cookie Policy
                 </Link>
               </li>
             </ul>

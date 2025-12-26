@@ -25,7 +25,7 @@ export default function HeroSection() {
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <Button size="lg" asChild>
-                <Link href="/signup" className="flex flex-row">
+                <Link href="#calculator" className="flex flex-row">
                   Start Planning Free
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
