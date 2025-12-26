@@ -10,14 +10,14 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#2563eb',
+          DEFAULT: '#25258a',
           50: '#eff6ff',
           100: '#dbeafe',
           200: '#bfdbfe',
           300: '#93c5fd',
           400: '#60a5fa',
           500: '#3b82f6',
-          600: '#2563eb',
+          600: '#25258a',
           700: '#1d4ed8',
           800: '#1e40af',
           900: '#1e3a8a',
@@ -26,7 +26,7 @@ const config: Config = {
         foreground: 'var(--foreground)',
         border: '#e5e7eb',
         input: '#e5e7eb',
-        ring: '#2563eb',
+        ring: '#25258a',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

@@ -26,7 +26,7 @@ const formSchema = z.object({
     .number()
     .min(18, "Must be at least 18 years old")
     .max(100, "Must be less than 100 years old"),
-  currentlyLivingIn: z.string().default("Germany"),
+  currentlyLivingIn: z.string().min(1, "Country is required"),
   familyStatus: z.string().min(1, "Please select family status"),
   hasKids: z.string().min(1, "Please select if you have kids"),
   numberOfKids: z.number().optional(),
@@ -61,7 +61,7 @@ const formSchema = z.object({
   goalFlexibility: z.string().min(1, "Please select goal flexibility"),
 });
 
-type FormData = z.infer<typeof formSchema>;
+type CalculatorFormData = z.infer<typeof formSchema>;
 
 const steps = [
   { title: "Personal", description: "Basic information" },
@@ -163,7 +163,7 @@ export function CalculatorForm() {
   const [showKidsNumber, setShowKidsNumber] = useState(false);
   const [showGoalAmount, setShowGoalAmount] = useState(true);
 
-  const form = useForm<FormData>({
+  const form = useForm<CalculatorFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       currentlyLivingIn: "Germany",
@@ -193,7 +193,7 @@ export function CalculatorForm() {
     setShowKidsNumber(watchHasKids === "yes");
   }, [watchHasKids]);
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: CalculatorFormData) => {
     setIsSubmitting(true);
     try {
       const { error } = await supabase.from("calculator_responses").insert([
@@ -267,8 +267,8 @@ export function CalculatorForm() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="text-center mb-8">
+    <div className="max-w-4xl mx-auto py-16 px-8 bg-white ">
+      <div className="text-center mb-8 ">
         <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
           <Clock className="h-4 w-4" />
           This will only take 7 minutes
@@ -301,7 +301,7 @@ export function CalculatorForm() {
                   id="email"
                   type="email"
                   {...register("email")}
-                  className="mt-1"
+                  className="mt-1 bg-white"
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm mt-1">
@@ -316,7 +316,7 @@ export function CalculatorForm() {
                   id="age"
                   type="number"
                   {...register("age", { valueAsNumber: true })}
-                  className="mt-1"
+                  className="mt-1 bg-white"
                 />
                 {errors.age && (
                   <p className="text-red-500 text-sm mt-1">
