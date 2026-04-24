@@ -17,7 +17,13 @@ import {
 } from "@/components/ui/select";
 import { Stepper } from "@/components/ui/stepper";
 import { supabase } from "@/lib/supabase";
-import { ChevronLeft, ChevronRight, Check, Clock } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Check,
+  Clock,
+  ChevronsLeftRightIcon,
+} from "lucide-react";
 
 const formSchema = z.object({
   // Personal Information
@@ -196,39 +202,56 @@ export function CalculatorForm() {
   const onSubmit = async (data: CalculatorFormData) => {
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.from("calculator_responses").insert([
-        {
-          email: data.email,
-          age: data.age,
-          currently_living_in: data.currentlyLivingIn,
-          family_status: data.familyStatus,
-          has_kids: data.hasKids,
-          number_of_kids: data.numberOfKids,
-          employment_status: data.employmentStatus,
-          housing_status: data.housingStatus,
-          financial_knowledge: data.financialKnowledge,
-          risk_comfort: data.riskComfort,
-          monthly_income: data.monthlyIncome,
-          income_stability: data.incomeStability,
-          rent_expenditure: data.rentExpenditure,
-          electricity_expenditure: data.electricityExpenditure,
-          utilities_expenditure: data.utilitiesExpenditure,
-          transport_expenditure: data.transportExpenditure,
-          groceries_expenditure: data.groceriesExpenditure,
-          miscellaneous_expenditure: data.miscellaneousExpenditure,
-          additional_yearly_income: data.additionalYearlyIncome,
-          additional_yearly_expenditure: data.additionalYearlyExpenditure,
-          goal_type: data.goalType,
-          goal_amount: data.goalAmount,
-          goal_amount_range: data.goalAmountRange,
-          time_horizon: data.timeHorizon,
-          funding_source: data.fundingSource,
-          goal_flexibility: data.goalFlexibility,
-          created_at: new Date().toISOString(),
-        },
-      ]);
+      const formData = {
+        email: data.email,
+        age: data.age,
+        currently_living_in: data.currentlyLivingIn,
+        family_status: data.familyStatus,
+        has_kids: data.hasKids,
+        number_of_kids: data.numberOfKids,
+        employment_status: data.employmentStatus,
+        housing_status: data.housingStatus,
+        financial_knowledge: data.financialKnowledge,
+        risk_comfort: data.riskComfort,
+        monthly_income: data.monthlyIncome,
+        income_stability: data.incomeStability,
+        rent_expenditure: data.rentExpenditure,
+        electricity_expenditure: data.electricityExpenditure,
+        utilities_expenditure: data.utilitiesExpenditure,
+        transport_expenditure: data.transportExpenditure,
+        groceries_expenditure: data.groceriesExpenditure,
+        miscellaneous_expenditure: data.miscellaneousExpenditure,
+        additional_yearly_income: data.additionalYearlyIncome,
+        additional_yearly_expenditure: data.additionalYearlyExpenditure,
+        goal_type: data.goalType,
+        goal_amount: data.goalAmount,
+        goal_amount_range: data.goalAmountRange,
+        time_horizon: data.timeHorizon,
+        funding_source: data.fundingSource,
+        goal_flexibility: data.goalFlexibility,
+        created_at: new Date().toISOString(),
+      };
+      console.log("submitting form data", formData);
+      const { error } = await supabase
+        .from("calculator_responses")
+        .insert([formData]);
 
       if (error) throw error;
+
+      // Call the scoring user response data API
+      try {
+        const response = await fetch("/api/scoring/user_response_data", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: data.email }),
+        });
+        const result = await response.json();
+        console.log("Scoring API result:", result);
+      } catch (scoringError) {
+        console.error("Error calling scoring API:", scoringError);
+      }
 
       setIsSubmitted(true);
     } catch (error) {
