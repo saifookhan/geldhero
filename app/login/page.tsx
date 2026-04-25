@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { ArrowRight } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -128,6 +129,10 @@ export default function LoginPage() {
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Signing in..." : "Sign in"}
           </Button>
+          {/* login as admin good text */}
+          <Link href="/admin/login" className="text-primary hover:text-primary/80 text-sm flex items-center justify-center">
+            Login as Admin <ArrowRight className="w-4 h-4" />
+          </Link>
         </form>
       </div>
     </div>
