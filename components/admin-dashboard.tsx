@@ -344,6 +344,7 @@ export function AdminDashboard() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>ID</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Age</TableHead>
                 <TableHead>Goal</TableHead>
@@ -375,11 +376,8 @@ export function AdminDashboard() {
                 </TableRow>
               ) : (
                 filteredResponses.map((response) => (
-                  <TableRow
-                    key={response.id}
-                    className="cursor-pointer hover:bg-gray-50"
-                    onClick={() => handleRowClick(response)}
-                  >
+                  <TableRow key={response.id} className="cursor-pointer hover:bg-gray-50">
+                    <TableCell className="font-medium">{response.id}</TableCell>
                     <TableCell className="font-medium">
                       {response.email}
                     </TableCell>

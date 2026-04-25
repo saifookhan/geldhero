@@ -11,11 +11,38 @@ import {
   TrendingUp,
   DollarSign,
   Calendar,
+  ShieldCheck,
 } from "lucide-react";
 import AuthenticatedHeader from "@/components/authenticated-header";
 
+interface ScoreBreakdownItem {
+  factor: string;
+  factor_slug: string;
+  userValue: string | number;
+  matchedCondition: string;
+  score: number;
+  maxPoints: number;
+}
+
+interface RiskCapacityScore {
+  id: number;
+  total_score: number;
+  max_possible_score: number;
+  score_breakdown: ScoreBreakdownItem[];
+  calculated_at: string;
+}
+
+const getRiskBand = (score: number, max: number) => {
+  const pct = max > 0 ? (score / max) * 100 : 0;
+  if (pct <= 35) return "Low";
+  if (pct <= 65) return "Medium";
+  return "High";
+};
+
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
+  const [riskScore, setRiskScore] = useState<RiskCapacityScore | null>(null);
+  const [scoreLoading, setScoreLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -26,6 +53,16 @@ export default function DashboardPage() {
       } = await supabase.auth.getSession();
       if (session) {
         setUser(session.user);
+        setScoreLoading(true);
+        const { data } = await supabase
+          .from("risk_capacity_scores")
+          .select("id,total_score,max_possible_score,score_breakdown,calculated_at")
+          .eq("user_email", session.user.email)
+          .order("calculated_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        setRiskScore(data || null);
+        setScoreLoading(false);
       } else {
         router.push("/login");
       }
@@ -124,6 +161,64 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-8 mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <ShieldCheck className="h-5 w-5 text-blue-600" />
+            <h3 className="text-xl font-semibold text-gray-900">
+              Your Risk Capacity Score
+            </h3>
+          </div>
+
+          {scoreLoading ? (
+            <p className="text-gray-500 text-sm">Loading your score...</p>
+          ) : !riskScore ? (
+            <p className="text-gray-500 text-sm">
+              No score yet. Complete your financial assessment to see your
+              results.
+            </p>
+          ) : (
+            <>
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <p className="text-2xl font-bold text-gray-900">
+                  {riskScore.total_score}
+                  <span className="text-sm font-medium text-gray-500 ml-1">
+                    / {riskScore.max_possible_score}
+                  </span>
+                </p>
+                <span className="inline-flex items-center rounded-full bg-blue-50 text-blue-700 px-2.5 py-1 text-xs font-semibold">
+                  {getRiskBand(riskScore.total_score, riskScore.max_possible_score)}
+                </span>
+                <span className="text-xs text-gray-500">
+                  Last updated{" "}
+                  {new Date(riskScore.calculated_at).toLocaleString("en-GB")}
+                </span>
+              </div>
+
+              <div className="space-y-2">
+                {Array.isArray(riskScore.score_breakdown) &&
+                  riskScore.score_breakdown.map((item, idx) => (
+                    <div
+                      key={`${item.factor_slug}-${idx}`}
+                      className="flex items-center justify-between rounded-md border border-gray-100 px-3 py-2"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">
+                          {item.factor}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {item.matchedCondition || "No match found"}
+                        </p>
+                      </div>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {item.score}/{item.maxPoints}
+                      </p>
+                    </div>
+                  ))}
+              </div>
+            </>
+          )}
         </div>
 
         {/* Getting Started Section */}

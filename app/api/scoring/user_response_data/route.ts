@@ -22,7 +22,6 @@ interface UserResponse {
   has_kids: string;
   employment_status: string;
   housing_status: string;
-  financial_knowledge: string;
   income_stability: string;
   monthly_income: string;
   risk_comfort: string;
@@ -105,7 +104,9 @@ function calculateDerivedMetrics(userResponse: UserResponse): DerivedMetrics {
   const monthlyIncome = resolveMonthlyIncome(userResponse);
   const avgMonthlyExpenditures =
     toNumber(userResponse.avg_monthly_expenditures) ?? monthlyExpenses;
-  const additionalYearlyIncome = toNumber(userResponse.additional_yearly_income);
+  const additionalYearlyIncome = toNumber(
+    userResponse.additional_yearly_income,
+  );
   const additionalYearlyExpenditure = toNumber(
     userResponse.additional_yearly_expenditure,
   );
@@ -151,28 +152,6 @@ interface CalculatedScore {
   maxPoints: number;
 }
 
-// 🔥 ENUM MAPPING (FIX)
-const enumValueMap: Record<string, Record<string, string>> = {
-  income_stability: {
-    stable: "regular",
-    "mostly-stable": "mostly_stable",
-    unstable: "variable",
-  },
-  financial_knowledge: {
-    "somewhat-confident": "intermediate",
-  },
-  housing: {
-    owner: "owned",
-  },
-  employment_status: {
-    employed: "full_time",
-  },
-  has_kids: {
-    yes: "true",
-    no: "false",
-  },
-};
-
 function normalizeEnumValue(value: unknown): string {
   return String(value ?? "")
     .trim()
@@ -180,25 +159,14 @@ function normalizeEnumValue(value: unknown): string {
     .replace(/[\s-]+/g, "_");
 }
 
-const factorSlugAliases: Record<string, string[]> = {
-  employment_status: ["employment", "job_status"],
-  financial_knowledge: ["financial_literacy", "financial_awareness", "knowledge"],
-};
+
 
 const enumValueAliases: Record<string, Record<string, string[]>> = {
-  employment_status: {
-    employed: ["full_time", "employed", "salaried"],
-  },
+
   housing: {
     owner: ["owner_paid", "owner_mortgage", "owned", "owner"],
     owned: ["owner_paid", "owner_mortgage", "owner", "owned"],
-    "living_with_parents": ["parents_shared", "living_with_parents", "shared"],
-  },
-  financial_knowledge: {
-    beginner: ["beginner", "basic"],
-    "somewhat_confident": ["intermediate", "somewhat_confident"],
-    confident: ["advanced", "confident"],
-    naive: ["naive", "none"],
+    living_with_parents: ["parents_shared", "living_with_parents", "shared"],
   },
 };
 
@@ -207,30 +175,9 @@ function getMatchingRowsByFactorSlug(
   factorSlug: string,
 ): ScoringMatrixRow[] {
   const normalizedRequested = normalizeEnumValue(factorSlug);
-  const aliases = factorSlugAliases[factorSlug] || [];
-  const candidateSlugs = [normalizedRequested, ...aliases.map(normalizeEnumValue)];
-
-  const bySlug = scoringMatrix.filter((row) =>
-    candidateSlugs.includes(normalizeEnumValue(row.factor_slug)),
+  return scoringMatrix.filter((row) =>
+    normalizedRequested.includes(normalizeEnumValue(row.factor_slug)),
   );
-  if (bySlug.length > 0) {
-    return bySlug;
-  }
-
-  // Fallback for legacy rows where factor labels exist but slugs are inconsistent.
-  const labelHints: Record<string, string[]> = {
-    employment_status: ["employment", "job"],
-    financial_knowledge: ["financial", "knowledge", "literacy"],
-  };
-  const hints = labelHints[factorSlug] || [];
-  if (hints.length === 0) {
-    return [];
-  }
-
-  return scoringMatrix.filter((row) => {
-    const normalizedFactorName = normalizeEnumValue(row.factor);
-    return hints.some((hint) => normalizedFactorName.includes(normalizeEnumValue(hint)));
-  });
 }
 
 // 🔥 MAIN FUNCTION
@@ -240,9 +187,9 @@ function calculateScores(
 ): CalculatedScore[] {
   const results: CalculatedScore[] = [];
 
-  // =========================
+  
   // Derived values
-  // =========================
+  
   const monthlyExpenses =
     (userResponse.rent_expenditure || 0) +
     (userResponse.electricity_expenditure || 0) +
@@ -261,32 +208,36 @@ function calculateScores(
     (userResponse.additional_yearly_income || 0) / 12 -
     (userResponse.additional_yearly_expenditure || 0) / 12 -
     monthlyExpenses;
+  const derivedMetrics = calculateDerivedMetrics(userResponse);
 
-  // =========================
+  
   // Mapping
-  // =========================
+  
   const fieldToFactorMap: Record<string, { value: any; type: string }> = {
     age: { value: userResponse.age, type: "range" },
     family_status: { value: userResponse.family_status, type: "enum" },
     kids: { value: userResponse.has_kids, type: "enum" },
-    employment_status: { value: userResponse.employment_status, type: "enum" },
     housing: { value: userResponse.housing_status, type: "enum" },
-    financial_knowledge: {
-      value: userResponse.financial_knowledge,
-      type: "enum",
-    },
     income_stability: { value: userResponse.income_stability, type: "enum" },
     monthly_income: { value: monthlyIncome, type: "range" },
     risk_comfort: { value: userResponse.risk_comfort, type: "enum" },
     expense_ratio: { value: expenseRatio, type: "range" },
     net_cash_flow: { value: netMonthlyCashFlow, type: "range" },
+    savings_coverage: {
+      value: derivedMetrics.savings_coverage ?? 0,
+      type: "range",
+    },
+    liabilities_load: {
+      value: derivedMetrics.liabilities_annual_income_ratio ?? 0,
+      type: "range",
+    },
   };
 
   console.log("=== FIELD MAP ===", fieldToFactorMap);
 
-  // =========================
+  
   // Process factors
-  // =========================
+  
   for (const [factorSlug, { value, type }] of Object.entries(
     fieldToFactorMap,
   )) {
@@ -294,11 +245,10 @@ function calculateScores(
 
     let matchedRow: ScoringMatrixRow | null = null;
 
-    if (type === "enum") {
-      const rawValue = String(value ?? "").toLowerCase();
-      const mappedValue = enumValueMap[factorSlug]?.[rawValue] || value;
-      const normalizedMappedValue = normalizeEnumValue(mappedValue);
-      const aliasCandidates = enumValueAliases[factorSlug]?.[normalizedMappedValue] || [];
+    if (type === "enum") {    
+      const normalizedMappedValue = normalizeEnumValue(value);
+      const aliasCandidates =
+        enumValueAliases[factorSlug]?.[normalizedMappedValue] || [];
       const candidateValues = [
         normalizedMappedValue,
         ...aliasCandidates.map(normalizeEnumValue),
@@ -322,7 +272,7 @@ function calculateScores(
         const min = row.range_min ?? -Infinity;
         const max = row.range_max ?? Infinity;
         return value >= min && value <= max;
-      });
+      }) || null;
     }
 
     // Debug
@@ -330,7 +280,6 @@ function calculateScores(
       console.log("❌ No match:", {
         factorSlug,
         originalValue: value,
-        mappedValue: enumValueMap[factorSlug]?.[String(value).toLowerCase()],
         matchingRows,
       });
     }
@@ -352,9 +301,8 @@ function calculateScores(
   return results;
 }
 
-// =========================
+
 // API ROUTE
-// =========================
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -379,6 +327,8 @@ export async function POST(request: NextRequest) {
       .order("created_at", { ascending: false })
       .limit(1)
       .single();
+
+      console.log("user response from backend", userResponse);
 
     if (responseError) {
       return NextResponse.json(

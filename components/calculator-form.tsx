@@ -24,6 +24,7 @@ import {
   Clock,
   ChevronsLeftRightIcon,
 } from "lucide-react";
+import { tr } from "zod/locales";
 
 const formSchema = z.object({
   // Personal Information
@@ -38,8 +39,6 @@ const formSchema = z.object({
   numberOfKids: z.number().optional(),
   employmentStatus: z.string().min(1, "Please select employment status"),
   housingStatus: z.string().min(1, "Please select housing status"),
-
-  // Financial Information
   financialKnowledge: z
     .string()
     .min(1, "Please select financial knowledge level"),
@@ -64,6 +63,8 @@ const formSchema = z.object({
   goalAmountRange: z.string().optional(),
   timeHorizon: z.string().min(1, "Please select time horizon"),
   fundingSource: z.string().min(1, "Please select funding source"),
+  currentSavings: z.number().min(0, "Must be a positive number"),
+  currentLiabilities: z.number().min(0, "Must be a positive number"),
   goalFlexibility: z.string().min(1, "Please select goal flexibility"),
 });
 
@@ -84,11 +85,11 @@ const familyStatusOptions = [
 const employmentStatusOptions = [
   { value: "self-employed", label: "Self-Employed" },
   { value: "unemployed", label: "Unemployed" },
-  { value: "employed", label: "Employed" },
+  { value: "full_time", label: "Employed" },
 ];
 
 const housingStatusOptions = [
-  { value: "owner", label: "Owner" },
+  { value: "owned", label: "Owner" },
   { value: "renting", label: "Renting" },
   { value: "living-with-parents", label: "Living with Parents" },
 ];
@@ -128,9 +129,9 @@ const monthlyIncomeOptions = [
 ];
 
 const incomeStabilityOptions = [
-  { value: "regular", label: "Regular (Permanent Job)" },
-  { value: "stable", label: "Stable" },
-  { value: "unstable", label: "Unstable/Variable" },
+  { value: "regular", label: "Regular" },
+  { value: "mostly_stable", label: "Mostly Stable" },
+  { value: "variable", label: "Unstable/Variable" },
 ];
 
 const goalTypeOptions = [
@@ -170,9 +171,24 @@ export function CalculatorForm() {
   const [showGoalAmount, setShowGoalAmount] = useState(true);
 
   const form = useForm<CalculatorFormData>({
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
     resolver: zodResolver(formSchema),
     defaultValues: {
+      email: "",
+      age: 0,
+
       currentlyLivingIn: "Germany",
+      familyStatus: "",
+      hasKids: "",
+      numberOfKids: 0,
+      employmentStatus: "",
+      housingStatus: "",
+      financialKnowledge: "",
+      riskComfort: "",
+      monthlyIncome: "",
+      incomeStability: "",
+
       rentExpenditure: 0,
       electricityExpenditure: 0,
       utilitiesExpenditure: 0,
@@ -181,6 +197,15 @@ export function CalculatorForm() {
       miscellaneousExpenditure: 0,
       additionalYearlyIncome: 0,
       additionalYearlyExpenditure: 0,
+
+      goalType: "",
+      goalAmount: 0,
+      goalAmountRange: "",
+      timeHorizon: "",
+      fundingSource: "",
+      currentSavings: 0,
+      currentLiabilities: 0,
+      goalFlexibility: "",
     },
   });
 
@@ -228,9 +253,12 @@ export function CalculatorForm() {
         goal_amount_range: data.goalAmountRange,
         time_horizon: data.timeHorizon,
         funding_source: data.fundingSource,
+        current_savings: data.currentSavings,
+        current_liabilities: data.currentLiabilities,
         goal_flexibility: data.goalFlexibility,
         created_at: new Date().toISOString(),
       };
+
       console.log("submitting form data", formData);
       const { error } = await supabase
         .from("calculator_responses")
@@ -261,7 +289,7 @@ export function CalculatorForm() {
     }
   };
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
@@ -309,7 +337,7 @@ export function CalculatorForm() {
         <Stepper steps={steps} currentStep={currentStep} />
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form className="space-y-6">
         {/* Step 1: Personal Information */}
         {currentStep === 0 && (
           <div className="space-y-6">
@@ -795,6 +823,32 @@ export function CalculatorForm() {
               </div>
 
               <div>
+                <Label htmlFor="currentSavings">Current Savings (€)</Label>
+
+                <Input
+                  id="currentSavings"
+                  type="number"
+                  {...register("currentSavings", { valueAsNumber: true })}
+                  className="mt-1"
+                  placeholder="Enter current savings"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="currentLiabilities">
+                  Current Liabilities (€)
+                </Label>
+
+                <Input
+                  id="currentLiabilities"
+                  type="number"
+                  {...register("currentLiabilities", { valueAsNumber: true })}
+                  className="mt-1"
+                  placeholder="Enter current liabilities"
+                />
+              </div>
+
+              <div>
                 <Label htmlFor="goalFlexibility">Goal Flexibility *</Label>
                 <Select
                   onValueChange={(value) => setValue("goalFlexibility", value)}
@@ -833,10 +887,11 @@ export function CalculatorForm() {
             Previous
           </Button>
 
-          {currentStep === steps.length - 1 ? (
+          {currentStep === 2 ? (
             <Button
-              type="submit"
+              type="button"
               disabled={isSubmitting}
+              onClick={handleSubmit(onSubmit)}
               className="flex items-center gap-2"
             >
               {isSubmitting ? "Submitting..." : "Submit Assessment"}

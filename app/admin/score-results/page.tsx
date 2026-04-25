@@ -32,36 +32,9 @@ interface RiskScore {
   total_score: number;
   max_possible_score: number;
   score_breakdown: ScoreBreakdown[];
-  derived_metrics?: {
-    monthly_surplus?: number | null;
-    expense_ratio?: number | null;
-    net_additional_cash_flow?: number | null;
-    savings_coverage?: number | null;
-    liabilities_annual_income_ratio?: number | null;
-  } | null;
   calculated_at: string;
   created_at: string;
 }
-
-const formatMetricValue = (
-  value: number | null | undefined,
-  options?: { percent?: boolean; currency?: boolean },
-) => {
-  if (value === null || value === undefined || Number.isNaN(value)) {
-    return "—";
-  }
-  if (options?.percent) {
-    return `${(value * 100).toFixed(2)}%`;
-  }
-  if (options?.currency) {
-    return new Intl.NumberFormat("en-DE", {
-      style: "currency",
-      currency: "EUR",
-      maximumFractionDigits: 2,
-    }).format(value);
-  }
-  return Number(value).toFixed(2);
-};
 
 const getRiskBand = (score: number, max: number) => {
   const pct = (score / max) * 100;
@@ -176,7 +149,6 @@ export default function Page() {
                 total_score: data.totalScore,
                 max_possible_score: data.maxPossibleScore,
                 score_breakdown: data.scoreBreakdown,
-                derived_metrics: data.derivedMetrics ?? s.derived_metrics,
                 calculated_at: new Date().toISOString(),
               }
             : s,
@@ -357,7 +329,6 @@ export default function Page() {
               const breakdown = Array.isArray(row.score_breakdown)
                 ? row.score_breakdown
                 : [];
-              const derivedMetrics = row.derived_metrics;
 
               return (
                 <React.Fragment key={row.id}>
@@ -603,66 +574,6 @@ export default function Page() {
                               </div>
                             );
                           })}
-                        </div>
-                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-6 mb-3">
-                          Derived Metrics
-                        </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                          {[
-                            {
-                              label: "Monthly Surplus",
-                              unit: "EUR / month",
-                              value: formatMetricValue(
-                                derivedMetrics?.monthly_surplus,
-                                { currency: true },
-                              ),
-                            },
-                            {
-                              label: "Expense Ratio",
-                              unit: "%",
-                              value: formatMetricValue(
-                                derivedMetrics?.expense_ratio,
-                                { percent: true },
-                              ),
-                            },
-                            {
-                              label: "Net Additional Cash Flow",
-                              unit: "EUR / year",
-                              value: formatMetricValue(
-                                derivedMetrics?.net_additional_cash_flow,
-                                { currency: true },
-                              ),
-                            },
-                            {
-                              label: "Savings Coverage",
-                              unit: "months",
-                              value: formatMetricValue(
-                                derivedMetrics?.savings_coverage,
-                              ),
-                            },
-                            {
-                              label: "Liabilities / Annual Income",
-                              unit: "ratio",
-                              value: formatMetricValue(
-                                derivedMetrics?.liabilities_annual_income_ratio,
-                              ),
-                            },
-                          ].map((metric) => (
-                            <div
-                              key={metric.label}
-                              className="bg-white rounded-xl px-4 py-3 border border-gray-100"
-                            >
-                              <p className="text-[11px] text-gray-500 uppercase tracking-wide">
-                                {metric.label}
-                              </p>
-                              <p className="text-sm font-semibold text-gray-900 mt-1">
-                                {metric.value}
-                              </p>
-                              <p className="text-[11px] text-gray-400 mt-0.5">
-                                {metric.unit}
-                              </p>
-                            </div>
-                          ))}
                         </div>
                       </td>
                     </tr>
