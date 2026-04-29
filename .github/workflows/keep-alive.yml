@@ -2,13 +2,13 @@ name: Keep Supabase Alive
 
 on:
   schedule:
-    - cron: '0 0 */3 * *'
+    - cron: "0 0 */3 * *"
   workflow_dispatch:
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/keep-alive.yml'
+      - ".github/workflows/keep-alive.yml"
 
 jobs:
   ping:
@@ -16,8 +16,8 @@ jobs:
     steps:
       - name: Ping Supabase
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.NEXT_SUPABASE_ANON_KEY }}
         run: |
           curl "${SUPABASE_URL}/rest/v1/calculator_responses?select=count" \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
